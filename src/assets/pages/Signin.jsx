@@ -12,42 +12,66 @@ function AuthenticationPage() {
   // State variables for password recovery form
   const [recoveryEmail, setRecoveryEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  // State variables for OTP confirmation form
+  const [otpCode, setOtpCode] = useState("");
+  const [sentOtp, setSentOtp] = useState("");
+  // State variable for displaying messages to the user
+  const [message, setMessage] = useState("");
   // Sign-in form submit handler
   const handleSignIn = (event) => {
     event.preventDefault();
     // Perform form validation
     if (!signInEmail || !signInPassword) {
-      alert("Please fill in both email and password fields.");
+      setMessage("Please fill in both email and password fields.");
       return;
     }
     // Proceed with the sign-in process
-    alert("Sign-in successful!");
+    setMessage("Sign-in successful!");
+    setCurrentForm("otp");
   };
   // Sign-up form submit handler
   const handleSignUp = (event) => {
     event.preventDefault();
     // Perform form validation
     if (!signUpName || !signUpEmail || !signUpPassword || !confirmPassword) {
-      alert("Please fill in all fields.");
+      setMessage("Please fill in all fields.");
       return;
     }
     if (signUpPassword !== confirmPassword) {
-      alert("Passwords do not match.");
+      setMessage("Passwords do not match.");
       return;
     }
-    
-    alert("Sign-up successful!");
+    // Proceed with the sign-up process
+    setMessage("Sign-up successful!");
+    setCurrentForm("otp");
+    // Here you can trigger OTP sending to user's email or phone
+    // Simulating sending OTP
+    setSentOtp("123456"); // Set a dummy OTP for demonstration purposes
   };
-
+  // Password recovery form submit handler
   const handleRecovery = (event) => {
     event.preventDefault();
-   
+    // Perform form validation
     if (!recoveryEmail || !newPassword) {
-      alert("Please fill in both email and new password fields.");
+      setMessage("Please fill in both email and new password fields.");
       return;
     }
-
-    alert("Password recovery successful!");
+    // Proceed with the password recovery process
+    setMessage("Password recovery successful!");
+    setCurrentForm("otp");
+    // Simulating sending OTP
+    setSentOtp("123456"); // Set a dummy OTP for demonstration purposes
+  };
+  // OTP confirmation form submit handler
+  const handleOtpConfirmation = (event) => {
+    event.preventDefault();
+    // Validate the OTP
+    if (otpCode === sentOtp) {
+      setMessage("OTP confirmed successfully!");
+      // Proceed with further action (e.g., granting access)
+    } else {
+      setMessage("Invalid OTP. Please try again.");
+    }
   };
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
@@ -125,7 +149,7 @@ function AuthenticationPage() {
                   required
                 />
               </div>
-              <div className="mb-4">
+              <div class="mb-4">
                 <input
                   type="password"
                   className="w-full p-2 border border-gray-300 rounded"
@@ -135,7 +159,7 @@ function AuthenticationPage() {
                   required
                 />
               </div>
-              <div className="mb-4">
+              <div class="mb-4">
                 <input
                   type="password"
                   className="w-full p-2 border border-gray-300 rounded"
@@ -177,7 +201,7 @@ function AuthenticationPage() {
                   required
                 />
               </div>
-              <div className="mb-4">
+              <div class="mb-4">
                 <input
                   type="password"
                   className="w-full p-2 border border-gray-300 rounded"
@@ -204,8 +228,43 @@ function AuthenticationPage() {
             </div>
           </>
         )}
+        {currentForm === "otp" && (
+          <>
+            <h2 className="text-xl font-semibold mb-4">Confirm OTP</h2>
+            <form onSubmit={handleOtpConfirmation}>
+              <div className="mb-4">
+                <input
+                  type="text"
+                  className="w-full p-2 border border-gray-300 rounded"
+                  placeholder="Enter OTP"
+                  value={otpCode}
+                  onChange={(e) => setOtpCode(e.target.value)}
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Confirm
+              </button>
+            </form>
+          </>
+        )}
+        {/* Render message */}
+        {message && (
+          <div className="mt-4 text-center text-red-500">{message}</div>
+        )}
       </div>
     </div>
   );
 }
 export default AuthenticationPage;
+
+
+
+
+
+
+
+
