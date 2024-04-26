@@ -37,16 +37,18 @@ function AuthenticationPage() {
       setMessage("Please fill in all fields.");
       return;
     }
+    if (signUpPassword.length < 8) {
+      setMessage("Password must be at least 8 characters long.");
+      return;
+    }
     if (signUpPassword !== confirmPassword) {
       setMessage("Passwords do not match.");
       return;
     }
-    // Proceed with the sign-up process
+  
     setMessage("Sign-up successful!");
     setCurrentForm("otp");
-    // Here you can trigger OTP sending to user's email or phone
-    // Simulating sending OTP
-    setSentOtp("123456"); // Set a dummy OTP for demonstration purposes
+    setSentOtp("123456"); 
   };
   // Password recovery form submit handler
   const handleRecovery = (event) => {
